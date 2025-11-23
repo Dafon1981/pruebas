@@ -1197,30 +1197,48 @@ async function handleRegister() {
 
 
         
-// Función para mostrar el menú principal después del login
-function showMainMenu() {
-    mainContent.style.display = 'block';
-    document.getElementById('btn-administrar').style.display = (currentUserData && currentUserData.estatus === 'admin') ? 'block' : 'none';
+// Función para manejar los clics en los botones del menú
+function handleMenuClick(section, clickedButton) {
+    menuButtons.forEach(button => button.classList.remove('active'));
+    if(clickedButton) clickedButton.classList.add('active');
     
-    // --- ¡AQUÍ INICIAMOS EL CARRUSEL DE TÍTULO! ---
-    startTitleCarousel();
-
-    assistantVideo.classList.remove('hidden');
-    assistantVideo.classList.add('initial-state');
+    if (section === 'Contacto') { 
+        window.open('https://wa.me/51967188120', '_blank'  );
+        setTimeout(() => { if(clickedButton) clickedButton.classList.remove('active'); }, 500);
+        return; 
+    }
     
-    setTimeout(() => {
-        assistantVideo.classList.remove('initial-state');
-        assistantVideo.classList.add('side-state');
-        document.querySelectorAll('.menu-button').forEach(button => button.classList.add('visible'));
+    stopTitleCarousel("Volver al Menú");
 
- // ¡AQUÍ HACEMOS VISIBLE EL BOTÓN DE SECHIN!
-        document.getElementById('ai-assistant-container').classList.add('visible');
+    menuButtons.forEach(button => button.classList.add('hidden-by-view'));
 
-        
-    }, 500);
+    // ¡CORRECCIÓN #1! Ahora apunta al ID correcto para ocultar el asistente.
+    document.getElementById('ai-assistant-container').classList.remove('visible');
     
-    searchObservados(true);
+    // ¡CORRECCIÓN #2! Eliminamos la referencia al 'menuToggle' que ya no existe.
+    // menuToggle.classList.add('visible'); 
+    
+    assistantVideo.classList.add('hidden');
+    
+    contentViews.forEach(v => v.classList.remove('visible'));
+    
+    let sectionId = section;
+    if (section === 'Conocimiento') {
+        sectionId = 'Nosotros';
+    }
+    
+    let viewId = `view-${sectionId.toLowerCase().replace(/ /g, '-')}`;
+    const viewToShow = document.getElementById(viewId);
+    
+    if (viewToShow) { 
+        viewToShow.classList.add('visible'); 
+    }
+    
+    if (section === 'Administrar') { 
+        loadUsers(); 
+    }
 }
+
 
 
         
@@ -1272,19 +1290,13 @@ function handleMenuClick(section, clickedButton) {
 // Función para volver al menú principal desde una vista
 
 function returnToMainMenu() {
-    // --- ¡AQUÍ REINICIAMOS EL CARRUSEL DE TÍTULO! ---
     startTitleCarousel();
-
-    // El 'menu-toggle' no existe, así que esta línea no es necesaria.
-    // menuToggle.classList.remove('visible'); 
     
     menuButtons.forEach(button => {
         button.classList.remove('hidden-by-view', 'active');
         button.classList.add('visible');
     });
 
-    // ¡LÍNEA CORREGIDA!
-    // Ahora sí hacemos visible el contenedor del asistente.
     document.getElementById('ai-assistant-container').classList.add('visible');
     
     assistantVideo.classList.remove('hidden');
@@ -1642,6 +1654,7 @@ setTimeout(goToLogin, 6000); // 6000 milisegundos = 6 segundos
     </script>
 </body>
 </html>
+
 
 
 
