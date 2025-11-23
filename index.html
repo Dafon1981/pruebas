@@ -1274,24 +1274,23 @@ function returnToMainMenu() {
     // --- ¡AQUÍ REINICIAMOS EL CARRUSEL DE TÍTULO! ---
     startTitleCarousel();
 
-    menuToggle.classList.remove('visible');
+    // El 'menu-toggle' no existe, así que esta línea no es necesaria.
+    // menuToggle.classList.remove('visible'); 
     
     menuButtons.forEach(button => {
         button.classList.remove('hidden-by-view', 'active');
         button.classList.add('visible');
-
-
- 
-        
     });
 
-    // ¡AQUÍ LO HACEMOS VISIBLE DE NUEVO!
-    document.getElementById('sechin-button').classList.add('visible');
+    // ¡LÍNEA CORREGIDA!
+    // Ahora sí hacemos visible el contenedor del asistente.
+    document.getElementById('ai-assistant-container').classList.add('visible');
     
     assistantVideo.classList.remove('hidden');
     
     contentViews.forEach(v => v.classList.remove('visible'));
 }
+
 
 
 /**
@@ -1642,6 +1641,7 @@ setTimeout(goToLogin, 6000); // 6000 milisegundos = 6 segundos
     </script>
 </body>
 </html>
+
 
 
 
