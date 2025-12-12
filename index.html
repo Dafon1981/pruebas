@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     
 <style>
   /* --- INICIO DEL CÓDIGO CSS --- */
@@ -129,6 +130,136 @@ body { margin: 0; font-family: 'Inter', sans-serif; background: var(--background
 /* === FIN DEL NUEVO DISEÑO DE BOTONES === */
 
 
+
+/* === ESTILO PARA EL BOTÓN FLOTANTE DE CHAT === */
+#chat-toggle-button {
+    position: absolute;
+    right: 25px;
+    top: 120px; /* Posicionado cerca de los botones del menú */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--hch-yellow); /* Color llamativo */
+    color: var(--hch-blue);
+    border: 3px solid white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 11; /* Encima de los botones del menú */
+    transition: transform 0.2s ease-out, opacity 0.3s ease-out;
+    opacity: 0; /* Inicialmente oculto */
+    pointer-events: none;
+}
+
+#chat-toggle-button.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#chat-toggle-button:hover {
+    transform: scale(1.05);
+}
+
+/* === ESTILO PARA LA VENTANA DE CHAT === */
+#chat-window {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f8f9fa;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%); /* Inicialmente fuera de la pantalla */
+    transition: transform 0.3s ease-in-out;
+}
+
+#chat-window.visible {
+    transform: translateX(0);
+}
+
+.chat-header {
+    padding: 15px;
+    background: linear-gradient(135deg, var(--header-primary-start) 0%, var(--header-primary-end) 100%);
+    color: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.chat-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#chat-messages {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background-color: #e9ecef;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 15px;
+    max-width: 80%;
+    line-height: 1.4;
+}
+
+.user-message {
+    background-color: var(--hch-blue);
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 0;
+}
+
+.assistant-message {
+    background-color: white;
+    color: #333;
+    margin-right: auto;
+    border: 1px solid #ccc;
+    border-bottom-left-radius: 0;
+}
+
+.chat-input-container {
+    padding: 10px;
+    background-color: white;
+    border-top: 1px solid #ccc;
+    display: flex;
+}
+
+#chat-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+#send-button {
+    background-color: var(--hch-blue);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 /* === ESTILO PARA EL BOTÓN DE ELIMINAR USUARIO === */
 .delete-user-btn {
@@ -539,118 +670,6 @@ input:checked + .slider:before { transform: translateX(20px); }
 .auth-form .link-button { background: none; border: none; color: var(--hch-blue); cursor: pointer; text-align: center; margin-top: 10px; }
 #auth-error { color: red; text-align: center; margin-top: 10px; font-size: 14px; }
 
-/* --- INICIO DE ESTILOS PARA EL BOTÓN DE SECHIN --- */
-
-.sechin-button {
-    position: absolute;
-    bottom: 35px; /* Misma altura que el botón de menú hamburguesa */
-    right: 25px;  /* Lo posiciona en la esquina derecha */
-    width: 50px;
-    height: 50px;
-    background-color: transparent; /* Sin color de fondo */
-    border: none;
-    border-radius: 50%;
-    padding: 0;
-    cursor: pointer;
-    z-index: 12;
-    transition: transform 0.2s ease-out, opacity 0.4s ease-out;
-    opacity: 0; /* Por defecto, está oculto */
-    pointer-events: none; /* Por defecto, no se puede hacer clic */
-}
-
-.sechin-button img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.sechin-button:hover {
-    transform: scale(1.1); /* Efecto de zoom al pasar el mouse */
-}
-
-/* Clase para hacerlo visible */
-.sechin-button.visible {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* --- INICIO DE ESTILOS PARA EL ASISTENTE VIRTUAL --- */
-
-/* Contenedor principal del asistente */
-.ai-assistant-container {
-    position: absolute;
-    right: 25px;
-    /* ¡LO SUBIMOS! Lo posicionamos debajo del botón "Administrar" */
-    top: 450px; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 12;
-    opacity: 0; /* Por defecto, está oculto */
-    pointer-events: none;
-    transition: opacity 0.4s ease-out;
-}
-
-/* Clase para hacerlo visible */
-.ai-assistant-container.visible {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* Estilo del botón de audio */
-.ai-audio-button {
-    width: 60px;  /* Un poco más grande para que destaque */
-    height: 60px;
-    background-color: transparent;
-    border: none;
-    border-radius: 50%;
-    padding: 0;
-    cursor: pointer;
-    transition: transform 0.2s ease-out;
-}
-
-.ai-audio-button img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.ai-audio-button:hover {
-    transform: scale(1.1);
-}
-
-/* Estilo de la leyenda "Asistente Virtual" */
-.ai-caption {
-    background-color: rgba(26, 74, 138, 0.9); /* Azul oscuro semitransparente */
-    color: white;
-    padding: 5px 12px;
-    border-radius: 15px;
-    font-size: 12px;
-    font-weight: 600;
-    margin-top: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    
-    /* Animación para que aparezca y desaparezca */
-    animation: fadeInOut 8s infinite;
-}
-
-/* Animación Keyframes */
-@keyframes fadeInOut {
-    0%, 100% { opacity: 0; } /* Empieza y termina invisible */
-    25%, 75% { opacity: 1; } /* Se mantiene visible en el medio */
-}
-
-/* --- FIN DE ESTILOS --- */
-
-
-
-    
-/* --- FIN DE ESTILOS --- */
-
-    
-
-
-    
 /* --- FIN DEL CÓDIGO CSS --- */
 
 </style>
@@ -693,7 +712,8 @@ input:checked + .slider:before { transform: translateX(20px); }
     <h2>Crear Cuenta</h2>
     <!-- Campos obligatorios -->
     <input type="text" id="register-name" placeholder="Nombre de Usuario" required>
-    <input type="password" id="register-password" placeholder="Clave" required>
+    <input type="text" id="register-password" placeholder="Clave" required>
+
     
     <!-- Campos opcionales (se ha quitado el 'required') -->
     <input type="email" id="register-email" placeholder="Correo Electrónico (Opcional)">
@@ -734,18 +754,6 @@ input:checked + .slider:before { transform: translateX(20px); }
         <!-- ¡NUEVO BOTÓN DE CERRAR SESIÓN! -->
 <button id="btn-logout" class="menu-button logout-style" onclick="handleLogout()">Cerrar Sesión</button>
         <button id="menu-toggle" class="menu-toggle" onclick="returnToMainMenu()">≡</button>
-        <!-- ¡NUEVO BOTÓN DE SECHIN! -->
-<!-- ¡NUEVO CONTENEDOR PARA EL ASISTENTE VIRTUAL! -->
-<!-- ¡NUEVO CONTENEDOR PARA EL ASISTENTE VIRTUAL! -->
-<div id="ai-assistant-container" class="ai-assistant-container">
-    <button id="ai-audio-button" class="ai-audio-button">
-        <img src="https://github.com/Dafon1981/Sechin/blob/main/sechinaudiobutton.png?raw=true" alt="Botón Asistente">
-    </button>
-    <div id="ai-caption" class="ai-caption">Asistente Virtual</div>
-</div>
-
-
-
         <!-- Contenedor de publicidad ahora con un video -->
 
 
@@ -900,6 +908,30 @@ input:checked + .slider:before { transform: translateX(20px); }
     </div>
 </div>
 
+    <!-- === BOTÓN FLOTANTE DE CHAT === -->
+    <div id="chat-toggle-button" onclick="toggleChatWindow()">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+
+    <!-- === VENTANA DE CHAT === -->
+    <div id="chat-window">
+        <div class="chat-header">
+            <span>Asistente de Registros</span>
+            <button onclick="toggleChatWindow()"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="chat-messages">
+            <div class="message assistant-message">
+                ¡Hola! Soy tu Asistente de Registros. Puedes preguntarme sobre la ubicación probable de un registro, el estado de un paciente o cualquier otra información de la base de datos.
+            </div>
+        </div>
+        <div class="chat-input-container">
+            <input type="text" id="chat-input" placeholder="Escribe tu pregunta..." onkeydown="if(event.key === 'Enter') sendChatMessage()">
+            <button id="send-button" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+</div> <!-- Cierre de mobile-container -->
+
 <!-- === FIN DEL CÓDIGO HTML === -->
 
 
@@ -957,6 +989,108 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- 4. FUNCIONES PRINCIPALES ---
 // Aquí van todas las funciones que la aplicación usará.
 
+
+// --- INICIO DE FUNCIONES PARA EL CHAT ---
+
+const chatWindow = document.getElementById('chat-window');
+const chatToggleButton = document.getElementById('chat-toggle-button');
+const chatMessages = document.getElementById('chat-messages');
+const chatInput = document.getElementById('chat-input');
+
+/**
+ * Abre o cierra la ventana de chat.
+ */
+function toggleChatWindow() {
+    chatWindow.classList.toggle('visible');
+    if (chatWindow.classList.contains('visible')) {
+        chatInput.focus();
+    }
+}
+
+/**
+ * Muestra un mensaje en la ventana de chat.
+ * @param {string} message El texto del mensaje.
+ * @param {string} sender 'user' o 'assistant'.
+ */
+function appendMessage(message, sender) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message', `${sender}-message`);
+    messageDiv.textContent = message;
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll al final
+}
+
+// --- CLAVE API DE OPENROUTER (¡ADVERTENCIA DE SEGURIDAD!) ---
+// **IMPORTANTE:** Poner la clave API en el código fuente del cliente (HTML/JS) es un riesgo de seguridad.
+// Cualquier persona que vea el código fuente podrá usar esta clave.
+// La solución correcta es usar un servidor proxy (backend) para manejar las llamadas a la API.
+const OPENROUTER_API_KEY = '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';
+const OPENROUTER_ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions';
+const OPENROUTER_MODEL = 'openai/gpt-3.5-turbo'; // Modelo rápido y económico
+
+let chatHistory = [
+    {
+        role: "system",
+        content: "Eres un Asistente de Registros útil y profesional para un hospital. Tu función es responder preguntas generales sobre los registros de pacientes y su ubicación probable, basándote en la estructura de datos. Las tablas disponibles son 'registros' (datos principales), 'observados' (pacientes en observación) y 'usuarios' (cuentas de usuario). Cuando te pregunten por datos específicos de un paciente (como un nombre o un ID), DEBES instruir al usuario a usar la funcionalidad principal de 'Búsqueda' de la aplicación, ya que no puedes acceder a la base de datos en tiempo real. Para preguntas generales sobre el proceso, la lógica de ubicación o los campos de datos, proporciona respuestas detalladas y útiles."
+    },
+    {
+        role: "assistant",
+        content: "¡Hola! Soy tu Asistente de Registros. Puedes preguntarme sobre la ubicación probable de un registro, el estado de un paciente o cualquier otra información de la base de datos."
+    }
+];
+
+/**
+ * Envía el mensaje del usuario a la API de OpenRouter.
+ */
+async function sendChatMessage() {
+    const userMessage = chatInput.value.trim();
+    if (!userMessage) return;
+
+    // 1. Mostrar mensaje del usuario y limpiar input
+    appendMessage(userMessage, 'user');
+    chatInput.value = '';
+    chatInput.disabled = true;
+    document.getElementById('send-button').disabled = true;
+
+    // 2. Añadir al historial
+    chatHistory.push({ role: "user", content: userMessage });
+
+    // 3. Llamar a la API
+    try {
+        const response = await fetch(OPENROUTER_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: OPENROUTER_MODEL,
+                messages: chatHistory
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error de API: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const assistantResponse = data.choices[0].message.content;
+
+        // 4. Mostrar respuesta del asistente y añadir al historial
+        appendMessage(assistantResponse, 'assistant');
+        chatHistory.push({ role: "assistant", content: assistantResponse });
+
+    } catch (error) {
+        console.error("Error al comunicarse con OpenRouter:", error);
+        appendMessage("Lo siento, hubo un error al conectar con el asistente. Por favor, inténtalo de nuevo.", 'assistant');
+    } finally {
+        chatInput.disabled = false;
+        document.getElementById('send-button').disabled = false;
+        chatInput.focus();
+    }
+}
+
+// --- FIN DE FUNCIONES PARA EL CHAT ---
 
 // --- INICIO DE FUNCIONES PARA EL CARRUSEL DE TÍTULO ---
 
@@ -1078,24 +1212,6 @@ function handleLogout() {
 
 
         
-// Nueva función para mostrar el menú principal
-function showMainMenu() {
-    startTitleCarousel();
-    
-    // 1. Ocultar todas las vistas de contenido
-    contentViews.forEach(v => v.classList.remove('visible'));
-    
-    // 2. Mostrar los botones del menú
-    menuButtons.forEach(button => {
-        button.classList.remove('hidden-by-view', 'active');
-        button.classList.add('visible');
-    });
-
-    // 3. Mostrar el asistente de IA
-    document.getElementById('ai-assistant-container').classList.add('visible');
-    assistantVideo.classList.remove('hidden');
-}
-
 // Función para manejar el inicio de sesión
 // Reemplaza la función existente con esta
 async function handleLogin() {
@@ -1162,7 +1278,6 @@ async function handleRegister() {
     const phone = document.getElementById('register-phone').value.trim();
     errorElement.style.display = 'none';
 
-    // 1. Verificamos que los campos obligatorios no estén vacíos.
     if (!name || !password) {
         errorElement.textContent = 'El nombre de usuario y la clave son obligatorios.';
         errorElement.style.display = 'block';
@@ -1181,14 +1296,14 @@ async function handleRegister() {
         return;
     }
 
-    // 2. Insertamos el nuevo usuario con 'habilitado' en 'false'.
+    // 1. Insertar el nuevo usuario (esto no cambia)
     const { error: insertError } = await supabase.from('usuarios').insert({
         usuario: name,
         email: email,
         clave: password,
         telefono: phone,
         estatus: 'usuario',
-        habilitado: false // <-- ¡CAMBIO IMPORTANTE!
+        habilitado: false
     });
 
     if (insertError) {
@@ -1197,66 +1312,77 @@ async function handleRegister() {
         return;
     }
 
-    // 3. Llamamos a la Edge Function para notificar al administrador.
+    // 2. Llamar a la Edge Function para notificar por correo (esto no cambia)
     try {
         await supabase.functions.invoke('notify-new-user', {
             body: { username: name, email: email, phone: phone },
         });
     } catch (functionError) {
         console.error("Error al notificar al administrador:", functionError.message);
-        // No detenemos al usuario por esto, pero lo registramos en la consola.
     }
 
-    // 4. Mostramos un mensaje de éxito al usuario.
-    alert('¡Registro exitoso! Tu cuenta ha sido creada y está pendiente de aprobación por un administrador.');
-    toggleAuthForms(); // Volvemos al formulario de login.
+    // 3. Mostrar un mensaje de éxito temporal al usuario
+    alert('¡Registro exitoso! Serás redirigido a WhatsApp para solicitar la activación de tu cuenta.');
+
+    // --- INICIO DE LA NUEVA FUNCIONALIDAD DE WHATSAPP ---
+
+    // 4. Construir el mensaje y el enlace de WhatsApp
+    const mensajeWhatsApp = `Deseo inscribirme a la app.
+Nombre: ${name}
+Clave: ${password}
+Correo: ${email || 'No proporcionado'}
+Teléfono: ${phone || 'No proporcionado'}
+Por favor, autorízame para entrar.`;
+    
+    // Codificamos el mensaje para que sea seguro en una URL
+    const mensajeCodificado = encodeURIComponent(mensajeWhatsApp);
+    
+    // El número de teléfono debe incluir el código de país (51 para Perú)
+    const numeroWhatsApp = '51967188120'; 
+    
+    const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensajeCodificado}`;
+
+    // 5. Redirigir al usuario al enlace de WhatsApp
+    // Usamos un pequeño retraso para que el 'alert' sea visible antes de la redirección.
+    setTimeout(( ) => {
+        window.location.href = urlWhatsApp;
+    }, 500); // Medio segundo de espera
+
+    // --- FIN DE LA NUEVA FUNCIONALIDAD ---
 }
+
+
+
 
 
 
         
-// Función para manejar los clics en los botones del menú
-function handleMenuClick(section, clickedButton) {
-    menuButtons.forEach(button => button.classList.remove('active'));
-    if(clickedButton) clickedButton.classList.add('active');
-    
-    if (section === 'Contacto') { 
-        window.open('https://wa.me/51967188120', '_blank'  );
-        setTimeout(() => { if(clickedButton) clickedButton.classList.remove('active'); }, 500);
-        return; 
-    }
-    
-    stopTitleCarousel("Volver al Menú");
 
-    menuButtons.forEach(button => button.classList.add('hidden-by-view'));
-
-    // ¡CORRECCIÓN #1! Ahora apunta al ID correcto para ocultar el asistente.
-    document.getElementById('ai-assistant-container').classList.remove('visible');
+        
+// Función para mostrar el menú principal después del login
+function showMainMenu() {
+    // ... (código existente)
     
-    // ¡CORRECCIÓN #2! Eliminamos la referencia al 'menuToggle' que ya no existe.
-    // menuToggle.classList.add('visible'); 
-    
-    assistantVideo.classList.add('hidden');
-    
-    contentViews.forEach(v => v.classList.remove('visible'));
-    
-    let sectionId = section;
-    if (section === 'Conocimiento') {
-        sectionId = 'Nosotros';
-    }
-    
-    let viewId = `view-${sectionId.toLowerCase().replace(/ /g, '-')}`;
-    const viewToShow = document.getElementById(viewId);
-    
-    if (viewToShow) { 
-        viewToShow.classList.add('visible'); 
-    }
-    
-    if (section === 'Administrar') { 
-        loadUsers(); 
-    }
+    // 4. Mostrar el botón de chat
+    chatToggleButton.classList.add('visible');
 }
+    mainContent.style.display = 'block';
+    document.getElementById('btn-administrar').style.display = (currentUserData && currentUserData.estatus === 'admin') ? 'block' : 'none';
+    
+    // --- ¡AQUÍ INICIAMOS EL CARRUSEL DE TÍTULO! ---
+    startTitleCarousel();
 
+    assistantVideo.classList.remove('hidden');
+    assistantVideo.classList.add('initial-state');
+    
+    setTimeout(() => {
+        assistantVideo.classList.remove('initial-state');
+        assistantVideo.classList.add('side-state');
+        document.querySelectorAll('.menu-button').forEach(button => button.classList.add('visible'));
+    }, 500);
+    
+    searchObservados(true);
+}
 
 
         
@@ -1275,10 +1401,6 @@ function handleMenuClick(section, clickedButton) {
     stopTitleCarousel("Volver al Menú");
 
     menuButtons.forEach(button => button.classList.add('hidden-by-view'));
-
-  // ¡AQUÍ OCULTAMOS EL BOTÓN DE SECHIN!
-    document.getElementById('sechin-button').classList.remove('visible');
-    
     menuToggle.classList.add('visible');
     assistantVideo.classList.add('hidden');
     
@@ -1308,20 +1430,25 @@ function handleMenuClick(section, clickedButton) {
 // Función para volver al menú principal desde una vista
 
 function returnToMainMenu() {
+    // ... (código existente)
+    
+    // 4. Ocultar el botón de chat
+    chatToggleButton.classList.remove('visible');
+}
+    // --- ¡AQUÍ REINICIAMOS EL CARRUSEL DE TÍTULO! ---
     startTitleCarousel();
+
+    menuToggle.classList.remove('visible');
     
     menuButtons.forEach(button => {
         button.classList.remove('hidden-by-view', 'active');
         button.classList.add('visible');
     });
-
-    document.getElementById('ai-assistant-container').classList.add('visible');
     
     assistantVideo.classList.remove('hidden');
     
     contentViews.forEach(v => v.classList.remove('visible'));
 }
-
 
 
 /**
@@ -1672,9 +1799,6 @@ setTimeout(goToLogin, 6000); // 6000 milisegundos = 6 segundos
     </script>
 </body>
 </html>
-
-
-
 
 
 
