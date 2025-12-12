@@ -1078,6 +1078,24 @@ function handleLogout() {
 
 
         
+// Nueva función para mostrar el menú principal
+function showMainMenu() {
+    startTitleCarousel();
+    
+    // 1. Ocultar todas las vistas de contenido
+    contentViews.forEach(v => v.classList.remove('visible'));
+    
+    // 2. Mostrar los botones del menú
+    menuButtons.forEach(button => {
+        button.classList.remove('hidden-by-view', 'active');
+        button.classList.add('visible');
+    });
+
+    // 3. Mostrar el asistente de IA
+    document.getElementById('ai-assistant-container').classList.add('visible');
+    assistantVideo.classList.remove('hidden');
+}
+
 // Función para manejar el inicio de sesión
 // Reemplaza la función existente con esta
 async function handleLogin() {
@@ -1654,6 +1672,7 @@ setTimeout(goToLogin, 6000); // 6000 milisegundos = 6 segundos
     </script>
 </body>
 </html>
+
 
 
 
