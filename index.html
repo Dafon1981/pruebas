@@ -984,6 +984,23 @@ document.addEventListener('DOMContentLoaded', () => {
     authContainer.style.display = 'none';
     mainContent.style.display = 'none';
     assistantVideo.classList.add('hidden');
+
+    // --- NUEVA LÓGICA DE TRANSICIÓN AUTOMÁTICA ---
+    const splashVideo = document.getElementById('splash-video');
+    if (splashVideo) {
+        // 1. Al terminar el video, ir a la pantalla de login.
+        splashVideo.addEventListener('ended', goToLogin);
+        
+        // 2. Si el video no tiene el atributo 'autoplay' o falla,
+        //    usamos un temporizador de respaldo (por ejemplo, 10 segundos).
+        //    Sin embargo, la mejor práctica es confiar en el evento 'ended' o el botón.
+        //    Dejaremos solo el evento 'ended' y el botón.
+    }
+});
+    // Ocultamos las secciones principales al inicio.
+    authContainer.style.display = 'none';
+    mainContent.style.display = 'none';
+    assistantVideo.classList.add('hidden');
 });
 
 // --- 4. FUNCIONES PRINCIPALES ---
